@@ -26,9 +26,9 @@ public class ChatBoundHandler implements Consumer<Update> {
     }
 
     public Future<Chat> getBoundChat() {
-        if(!running) {
+        if (!running) {
             synchronized (this) {
-                if(!running)
+                if (!running)
                     loop.addListener(this);
                 running = true;
             }

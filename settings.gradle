@@ -2,6 +2,5 @@ rootProject.name = 'godville-spy'
 
 include 'core'
 include 'telegram-bot'
-include 'properties-annotation-processor'
 include 'tg-api'
 

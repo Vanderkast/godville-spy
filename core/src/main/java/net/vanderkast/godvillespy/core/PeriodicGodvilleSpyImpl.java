@@ -30,7 +30,6 @@ public class PeriodicGodvilleSpyImpl implements GodvilleSpy {
     }
 
     /**
-     *
      * @param onStateUpdated hero state updates consumer.
      * @return
      */
