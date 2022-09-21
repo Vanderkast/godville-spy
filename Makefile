@@ -8,3 +8,6 @@ IMAGE_NAME_FULL=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
 
 image:
 	docker build -t ${IMAGE_NAME_FULL} .
+
+publish: image
+	docker push ${IMAGE_NAME_FULL}
