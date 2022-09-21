@@ -184,3 +184,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,gradle,java,android
 
 **/application.properties
+
+run/docker/resources

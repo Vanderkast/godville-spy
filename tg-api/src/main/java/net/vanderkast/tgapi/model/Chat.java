@@ -3,14 +3,15 @@ package net.vanderkast.tgapi.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Optional;
 
 @Builder
+@Getter
+@ToString
 public class Chat {
-    @Getter
     private final long id;
-    @Getter
     private final String type;
     private final String title;
     private final String username;

@@ -25,6 +25,6 @@ public class HeroStateDto implements HeroState {
 
     @Override
     public Optional<Integer> getHealth() {
-        return Optional.of(health);
+        return Optional.ofNullable(health);
     }
 }

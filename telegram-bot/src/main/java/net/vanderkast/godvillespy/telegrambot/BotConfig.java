@@ -34,7 +34,7 @@ public class BotConfig implements Configuration {
     private static String read(Properties properties, String key) throws ConfigurationException {
         var value = properties.getProperty(key);
         if (value == null)
-            throw new ConfigurationException("Property 'bot.token' must be specified.");
+            throw new ConfigurationException("Property " + key +" must be specified.");
         return value;
     }
 

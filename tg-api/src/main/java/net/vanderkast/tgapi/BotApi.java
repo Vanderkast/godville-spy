@@ -1,6 +1,5 @@
 package net.vanderkast.tgapi;
 
-import net.vanderkast.tgapi.model.Chat;
 import net.vanderkast.tgapi.model.Message;
 import net.vanderkast.tgapi.model.Update;
 import net.vanderkast.tgapi.model.User;
@@ -14,6 +13,4 @@ public interface BotApi {
     Optional<User> getBot();
 
     Optional<List<Update>> getUpdates(GetUpdates updates);
-
-    Optional<List<Chat>> getAllChats();
 }

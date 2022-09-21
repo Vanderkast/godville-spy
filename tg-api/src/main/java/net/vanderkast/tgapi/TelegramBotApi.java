@@ -1,7 +1,10 @@
 package net.vanderkast.tgapi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import net.vanderkast.tgapi.model.*;
+import net.vanderkast.tgapi.model.Message;
+import net.vanderkast.tgapi.model.TgResponse;
+import net.vanderkast.tgapi.model.Update;
+import net.vanderkast.tgapi.model.User;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +52,6 @@ public class TelegramBotApi implements BotApi {
                 }))
                 .map(TgResponse::getResult);
     }
-
-    @Override
-    public Optional<List<Chat>> getAllChats() {
-        return send(getUrl(new GetAllChats()), "")
-                .flatMap(response -> parseResponse(response, new TypeReference<TgResponse<List<Chat>>>() {
-                }))
-                .map(TgResponse::getResult);
-    }
-
 
     public String getUrl(Method method) {
         return "https://api.telegram.org/bot" + token + "/" + method.getName();
