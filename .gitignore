@@ -185,4 +185,4 @@ gradle-app.setting
 
 **/application.properties
 
-run/docker/resources
+run/docker/resources*

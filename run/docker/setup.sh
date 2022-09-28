@@ -7,6 +7,6 @@ else
 fi
 
 mkdir resources
-cp -r RESOURCES_DIR/application.properties.tpl resources/application.properties
-cp -r RESOURCES_DIR/logback.xml resources/logback.xml
+cp -r $RESOURCES_DIR/application.properties.tpl resources/application.properties
+cp -r $RESOURCES_DIR/logback.xml resources/logback.xml
 
