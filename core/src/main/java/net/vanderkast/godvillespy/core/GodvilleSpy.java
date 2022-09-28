@@ -2,7 +2,7 @@ package net.vanderkast.godvillespy.core;
 
 import java.util.function.Consumer;
 
-public interface GodvilleSpy extends Joinable {
+public interface GodvilleSpy extends Worker {
     /**
      * Starts spy on hero.
      *
@@ -10,9 +10,4 @@ public interface GodvilleSpy extends Joinable {
      * @return true is spying started successfully, false otherwise.
      */
     boolean spy(Consumer<HeroState> onStateUpdated);
-
-    /**
-     * @throws InterruptedException
-     */
-    void stop() throws InterruptedException;
 }

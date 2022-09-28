@@ -67,6 +67,7 @@ public class PeriodicGodvilleSpyImpl implements GodvilleSpy {
         return spy != null && spy.isAlive();
     }
 
+    @Override
     public void stop() throws InterruptedException {
         logger.info("Stopping.");
         if (spy != null) {

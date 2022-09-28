@@ -33,7 +33,7 @@ public class UpdatesLoopImpl implements UpdatesLoop {
     }
 
     @Override
-    public void close() {
+    public void stop() {
         loop.interrupt();
     }
 

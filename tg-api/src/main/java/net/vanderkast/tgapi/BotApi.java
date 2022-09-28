@@ -13,4 +13,6 @@ public interface BotApi {
     Optional<User> getBot();
 
     Optional<List<Update>> getUpdates(GetUpdates updates);
+
+    Optional<Boolean> deleteMessage(DeleteMessage message);
 }

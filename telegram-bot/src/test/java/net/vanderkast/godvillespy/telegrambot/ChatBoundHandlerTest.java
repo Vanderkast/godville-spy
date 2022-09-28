@@ -27,7 +27,7 @@ class ChatBoundHandlerTest {
         }
 
         @Override
-        public void close() throws Exception {
+        public void stop() throws InterruptedException {
             fail("Unexpected 'close' method call.");
         }
 
@@ -56,7 +56,7 @@ class ChatBoundHandlerTest {
         }
 
 
-        var update = new Update(100, new Message(Chat.builder().username(owner).build(), "/bound"));
+        var update = new Update(100, new Message(Chat.builder().username(owner).build(), 1, "/bound"));
         listener.get().accept(update);
 
         try {
@@ -72,7 +72,7 @@ class ChatBoundHandlerTest {
         var chatFuture = handler.getBoundChat();
         assertNotNull(listener.get());
 
-        var update = new Update(100, new Message(Chat.builder().username("TRAITOR").build(), "/bound"));
+        var update = new Update(100, new Message(Chat.builder().username("TRAITOR").build(), 1, "/bound"));
 
         try {
             var chat = chatFuture.get(0, TimeUnit.MILLISECONDS);

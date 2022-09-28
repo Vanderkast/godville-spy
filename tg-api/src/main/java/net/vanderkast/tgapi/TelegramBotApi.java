@@ -29,27 +29,32 @@ public class TelegramBotApi implements BotApi {
 
     @Override
     public Optional<Message> send(SendMessage message) {
-        return jackson.serialize(message)
-                .flatMap(data -> send(getUrl(message), data))
-                .flatMap(response -> parseResponse(response, new TypeReference<TgResponse<Message>>() {
-                }))
-                .map(TgResponse::getResult);
+        return handle(message, new TypeReference<>() {
+        });
     }
 
     @Override
     public Optional<User> getBot() {
-        return send(getUrl(new GetMe()), "")
-                .flatMap(response -> parseResponse(response, new TypeReference<TgResponse<User>>() {
-                }))
-                .map(TgResponse::getResult);
+        return handle(new GetMe(), new TypeReference<>() {
+        });
     }
 
     @Override
-    public Optional<List<Update>> getUpdates(GetUpdates updates) {
-        return jackson.serialize(updates)
-                .flatMap(data -> send(getUrl(updates), data))
-                .flatMap(response -> parseResponse(response, new TypeReference<TgResponse<List<Update>>>() {
-                }))
+    public Optional<List<Update>> getUpdates(GetUpdates method) {
+        return handle(method, new TypeReference<>() {
+        });
+    }
+
+    @Override
+    public Optional<Boolean> deleteMessage(DeleteMessage message) {
+        return handle(message, new TypeReference<>() {
+        });
+    }
+
+    private <T> Optional<T> handle(Method method, TypeReference<TgResponse<T>> ref) {
+        return jackson.serialize(method)
+                .flatMap(data -> send(getUrl(method), data))
+                .flatMap(response -> parseResponse(response, ref))
                 .map(TgResponse::getResult);
     }
 

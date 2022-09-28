@@ -1,10 +1,14 @@
 package net.vanderkast.godvillespy.telegrambot;
 
 import net.vanderkast.godvillespy.core.PeriodicGodvilleSpyImpl;
-import net.vanderkast.tgapi.BotApi;
-import net.vanderkast.tgapi.Jackson;
-import net.vanderkast.tgapi.TelegramBotApi;
-import net.vanderkast.tgapi.UpdatesLoopImpl;
+import net.vanderkast.godvillespy.telegrambot.herostatehandler.HeroLowHpHandler;
+import net.vanderkast.godvillespy.telegrambot.herostatehandler.HeroStateHandlerChain;
+import net.vanderkast.godvillespy.telegrambot.herostatehandler.TokenExpiredHandler;
+import net.vanderkast.godvillespy.telegrambot.notification.HpNotification;
+import net.vanderkast.godvillespy.telegrambot.notification.TokenExpiredNotification;
+import net.vanderkast.godvillespy.telegrambot.notifier.NotificationRouter;
+import net.vanderkast.godvillespy.telegrambot.notifier.SingleMessageNotifier;
+import net.vanderkast.tgapi.*;
 import net.vanderkast.tgapi.model.Chat;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -45,17 +50,26 @@ public class Application {
         logger.info("I'm {}", bot.getUsername());
 
         Chat chat;
-        try (var updatesLoop = new UpdatesLoopImpl(api)) {
-            try {
-                chat = new ChatBoundHandler(updatesLoop, config.getBotOwnerUsername()).getBoundChat().get();
-            } catch (ExecutionException e) {
-                logger.error("Waiting user to bound.", e);
-                return;
-            }
+        UpdatesLoop updatesLoop = new UpdatesLoopImpl(api);
+        try {
+            chat = new ChatBoundHandler(updatesLoop, config.getBotOwnerUsername()).getBoundChat().get();
+        } catch (ExecutionException e) {
+            logger.error("Waiting user to bound.", e);
+            return;
         }
-        logger.info("Bot will send updates to user {} to chat id {}", config.getBotOwnerUsername(), chat);
+        updatesLoop.stop();
 
-        var stateHandler = new HeroStateUpdateHandler(api, chat.getId(), config.getNotifyOnHealthLessThanPercents());
+        logger.info("Bot will send updates to user {} to chat {}", config.getBotOwnerUsername(), chat);
+
+        var notificationRouter = new NotificationRouter.Builder()
+                .notifications(HpNotification.class, TokenExpiredNotification.class)
+                .routes(new SingleMessageNotifier(api, chat.getId()), new SingleMessageNotifier(api, chat.getId()))
+                .build();
+
+        var stateHandler = new HeroStateHandlerChain(notificationRouter,
+                List.of(new HeroLowHpHandler(config.getNotifyOnHealthLessThanPercents()),
+                        new TokenExpiredHandler()));
+
         logger.info("Binding {} for God {} to chat {}.", bot.getUsername(), config.getGodName(), chat.getId());
         var spy = new PeriodicGodvilleSpyImpl(
                 new GodvilleRequestHandler(
