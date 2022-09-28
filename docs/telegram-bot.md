@@ -23,3 +23,8 @@ Location of `application.properties` file must be configured with environment va
 ## Docker image
 
 You can run Godville Spy in docker container. More information in [../run/docker/readme.md](../run/docker/readme.md)
+
+## Work
+
+Bot waits a user to send `/bound` command to send notifications to them.
+Note that name of user must be the same as specified in `bot.owner` configuration variable otherwise bot will not send notifications. 
